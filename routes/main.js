@@ -1,0 +1,11 @@
+const router = require('express').Router() //creates a router object to handle requests
+const mainController = require('../controllers/main') // main controller has all the functions which controls our api calls
+router.get('/companies', require('../middlewares/authmiddleware').authMiddleWare, mainController.companies) //first argument being our endpoint, second being our middleware so that only authenticated users can acces, the third is our controller which fetches all the companies request type:-GET
+router.get('/companies/:id', require('../middlewares/authmiddleware').authMiddleWare, mainController.findCompany) //this route allows user to find company by specific id provided by user request type:-GET
+router.post('/createcompany', require('../middlewares/authmiddleware').authMiddleWare, mainController.createCompany) // this route allows user to create company based on details provieded by the user request type:-POST
+router.put('/updatecompany/:id', require('../middlewares/authmiddleware').authMiddleWare, mainController.updateCompany) // this route allows user to update company details which is earlier created by the user by specifying the company id request type:-PUT
+router.delete('/deletecompany/:id', require('../middlewares/authmiddleware').authMiddleWare, mainController.deleteCompany) //this route allows user to delete company data which is earlier created by the user by just specifying the company id request type:-Delete
+router.post('/createteam/:id', require('../middlewares/authmiddleware').authMiddleWare, mainController.createTeam) //this route allows user to create team for a company provided by user request type:-POST
+router.get('/:company/teams', require('../middlewares/authmiddleware').authMiddleWare, mainController.teams) //this route allows user to get teams of a company by just entering the company name type:GET
+router.get('/search/:val', require('../middlewares/authmiddleware').authMiddleWare, mainController.searchCompanies) // this route allows user to search for companies 
+module.exports = router
