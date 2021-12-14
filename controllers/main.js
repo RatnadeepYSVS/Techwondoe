@@ -59,7 +59,7 @@ exports.createTeam = async(req, res) => {
             }) //returning success response to user
     } //call for getting all the teams that company has which was provided by user
 exports.teams = async(req, res) => {
-        const companyName = req.params.company //getting the company name from user
+        const companyName = req.params.company.toLowerCase() //getting the company name from user
         const office = await company.findOne({ name: companyName }) //fetching details of company provided by user
         const teams = await team.find({ companyy: office.id }) //getting the teams that based on company id
         res.status(200).json({ 'teams': teams }) // getting details of the teams 
