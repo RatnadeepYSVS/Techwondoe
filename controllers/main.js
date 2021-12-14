@@ -18,7 +18,7 @@ exports.createCompany = async(req, res) => {
         const { name } = body // destructuring company name from body
         const companyName = await company.findOne({ name }) // checking whether company exists or not
         if (companyName) return res.status(403).json({ 'msg': 'Company Exists' }) //returning a response of 403 to user that company with that name is already present
-        const companyy = await company.create({...body, uniqeid: uuid() }) //creating the company details
+        const companyy = await company.create({...body, name: name.toLowerCase(), uniqeid: uuid() }) //creating the company details
         res.status(201).json({
                 "msg": "Company Created",
                 "Company": companyy
@@ -67,7 +67,7 @@ exports.teams = async(req, res) => {
 exports.searchCompanies = async(req, res) => {
     const searchVal = req.params.val //search keyword entered by user
     const companies = await company.find() // fetching all companies
-    const searchResults = companies.filter(i => i.name.toLowerCase().indexOf(searchVal) != -1)
+    const searchResults = companies.filter(i => i.name.toLowerCase().indexOf(searchVal.toLowerCase()) != -1)
         //the thing happening in above line is we are using filter to filter our results based on company name by checking whether the entered string or letter entered by user is there or not 
     res.status(200).json({ msg: searchResults }) //fetching the search results
 }
