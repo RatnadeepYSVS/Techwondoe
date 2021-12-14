@@ -41,7 +41,8 @@ exports.deleteCompany = async(req, res) => {
         const { body } = req // destructuring body from req
         const { name } = body // destructuring company name from body
         const id = req.params.id // fetching the id of company provided by user
-        const companyName = await company.findOne({ name }) //checking whether company exists or not
+        const validName = name.toLowerCase()
+        const companyName = await company.findOne({ validName }) //checking whether company exists or not
         if (!companyName) return res.status(404).json({ 'msg': 'Company Not Exists' }) //returning a response of 404 that the company provided by user is not there
         const companyy = await company.findByIdAndDelete(id) //deleting company details
         res.status(201).json({
