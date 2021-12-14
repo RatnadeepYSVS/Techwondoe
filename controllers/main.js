@@ -16,7 +16,8 @@ exports.findCompany = async(req, res) => {
 exports.createCompany = async(req, res) => {
         const { body } = req // destructuring body from req
         const { name } = body // destructuring company name from body
-        const companyName = await company.findOne({ name }) // checking whether company exists or not
+        const validName = name.toLowerCase() //converting to lowercase to validate company
+        const companyName = await company.findOne({ validName }) //checking whether company exists or not
         if (companyName) return res.status(403).json({ 'msg': 'Company Exists' }) //returning a response of 403 to user that company with that name is already present
         const companyy = await company.create({...body, name: name.toLowerCase(), uniqeid: uuid() }) //creating the company details
         res.status(201).json({
@@ -29,7 +30,8 @@ exports.updateCompany = async(req, res) => {
         const { body } = req // destructuring body from req
         const { name } = body // destructuring company name from body
         const { id } = req.params // fetching the id of company provided by user
-        const companyName = await company.findOne({ name }) //checking whether company exists or not
+        const validName = name.toLowerCase() //converting to lowercase to validate company
+        const companyName = await company.findOne({ validName }) //checking whether company exists or not
         if (!companyName) return res.status(404).json({ 'msg': 'Company Not Exists' }) //returning a response of 404 that the company provided by user is not there
         const companyy = await company.findByIdAndUpdate(id, {...body }, { new: true, runValidators: true }) //updating company details
         res.status(201).json({
@@ -41,7 +43,7 @@ exports.deleteCompany = async(req, res) => {
         const { body } = req // destructuring body from req
         const { name } = body // destructuring company name from body
         const id = req.params.id // fetching the id of company provided by user
-        const validName = name.toLowerCase()
+        const validName = name.toLowerCase() //converting to lowercase to validate company
         const companyName = await company.findOne({ validName }) //checking whether company exists or not
         if (!companyName) return res.status(404).json({ 'msg': 'Company Not Exists' }) //returning a response of 404 that the company provided by user is not there
         const companyy = await company.findByIdAndDelete(id) //deleting company details
